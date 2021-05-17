@@ -7,6 +7,7 @@ package ni.edu.uni.fcys.programacion2.Controllers;
 
 import java.awt.event.ActionEvent;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import ni.edu.uni.fcys.programacaion2.Panels.Calculator;
 
 /**
@@ -45,6 +46,14 @@ public class CalculatorController {
     }
     
     private void CalculatorEvent() throws NumberFormatException{
+        if(calculator.getTxtNum1().getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "No se puede calcular,\ndebe ingresar un valor");
+        }
+        
+        if(calculator.getTxtNum2().getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "No se puede calcular,\ndebe ingresar un valor");
+        }
+        
         double num1=Double.parseDouble(calculator.getTxtNum1().getText());
         double num2=Double.parseDouble(calculator.getTxtNum2().getText());
         

@@ -9,8 +9,10 @@ import java.awt.BorderLayout;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import ni.edu.uni.fcys.programacaion2.Panels.Calculator;
+import ni.edu.uni.fcys.programacaion2.Panels.Moneda;
 import ni.edu.uni.fcys.programacaion2.Panels.Temperatura;
 import ni.edu.uni.fcys.programacion2.Controllers.CalculatorController;
+import ni.edu.uni.fcys.programacion2.Controllers.MonedaController;
 import ni.edu.uni.fcys.programacion2.Controllers.TemperaturaController;
 
 /**
@@ -26,6 +28,8 @@ public class CoversionApp extends javax.swing.JFrame {
     private CalculatorController controller;
     private Temperatura temperatura;
     private TemperaturaController temperaturaController;
+    private Moneda moneda;
+    private MonedaController mc;
     public CoversionApp() {
         initComponents();
     }
@@ -77,6 +81,11 @@ public class CoversionApp extends javax.swing.JFrame {
         jMenu1.add(MniTemp);
 
         MniMoneda.setText("Moneda");
+        MniMoneda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MniMonedaActionPerformed(evt);
+            }
+        });
         jMenu1.add(MniMoneda);
         jMenu1.add(jSeparator1);
 
@@ -128,6 +137,16 @@ public class CoversionApp extends javax.swing.JFrame {
         }
         addComponent(temperatura);
     }//GEN-LAST:event_MniTempActionPerformed
+
+    private void MniMonedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MniMonedaActionPerformed
+        // TODO add your handling code here:
+        if(moneda==null){
+            moneda=new Moneda();
+            mc=new MonedaController(moneda);
+            
+        }
+        addComponent(moneda);
+    }//GEN-LAST:event_MniMonedaActionPerformed
 
     private void addComponent(JComponent component) {
         pnlContent.removeAll();

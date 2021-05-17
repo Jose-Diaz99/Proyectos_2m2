@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.text.DecimalFormat;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import ni.edu.uni.fcys.programacaion2.Panels.Temperatura;
 
 /**
@@ -54,6 +55,10 @@ public class TemperaturaController {
         temperatura.getLblResult().setText("Resultado: ");
     }
     private void conversionEvent() throws NumberFormatException {
+        if(temperatura.getTxtValue().getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "No podemos realizar la coversion,\ndebe ingresar un valor");
+        }
+        
         int indexFrom = temperatura.getCmbFrom().getSelectedIndex();
         int indexTo = temperatura.getCmbTo().getSelectedIndex();
         double value = Double.parseDouble(

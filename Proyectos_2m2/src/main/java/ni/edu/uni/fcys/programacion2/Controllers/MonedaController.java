@@ -7,6 +7,7 @@ package ni.edu.uni.fcys.programacion2.Controllers;
 
 import java.awt.event.ActionEvent;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import ni.edu.uni.fcys.programacaion2.Panels.Moneda;
 
 /**
@@ -15,7 +16,7 @@ import ni.edu.uni.fcys.programacaion2.Panels.Moneda;
  */
 public class MonedaController {
     private Moneda moneda;
-    private final String Moneda[] = new String[]{"Cordoba", "Dolar","Euro"};
+    private final String Coin[] = new String[]{"Cordoba", "Dolar","Euro"};
     private DefaultComboBoxModel fromcmbmodel;
     private DefaultComboBoxModel tocmbmodel;
 
@@ -25,56 +26,97 @@ public class MonedaController {
     }
 
     private void initComponent() {
-        fromcmbmodel = new DefaultComboBoxModel<>(Moneda);
-        tocmbmodel = new DefaultComboBoxModel<>(Moneda);
+        fromcmbmodel = new DefaultComboBoxModel<>(Coin);
+        tocmbmodel = new DefaultComboBoxModel<>(Coin);
 
         moneda.getCmbFrom().setModel(fromcmbmodel);
         moneda.getCmbTo().setModel(tocmbmodel);
+        
+        moneda.getBtnCalc().addActionListener(
+                (ActionEvent e) -> {
+                    btnConvActionPerformed(e);
+                });
+        
+        moneda.getBtnBorrar().addActionListener(
+                (ActionEvent e) -> {
+                    btnBorrarActionPerformed(e);
+                });
+        
+        
     }
     
     private void btnConvActionPerformed(ActionEvent e) {
         conversionEvent();
     }
     private void btnBorrarActionPerformed(ActionEvent e){
-        temperatura.getTxtValue().setText(null);
-        temperatura.getLblResult().setText("Resultado: ");
+        moneda.getTxtValue().setText(null);
+        moneda.getLblResult().setText("Resultado: ");
     }
     private void conversionEvent() throws NumberFormatException {
-        int indexFrom = temperatura.getCmbFrom().getSelectedIndex();
-        int indexTo = temperatura.getCmbTo().getSelectedIndex();
+        if(moneda.getTxtValue().getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "No podemos realizar la coversion,\ndebe ingresar un valor");
+        }
+        
+        String indexFrom = moneda.getCmbFrom().getSelectedItem().toString();
+        String indexTo = moneda.getCmbTo().getSelectedItem().toString();
         double value = Double.parseDouble(
-                temperatura.getTxtValue().getText());
+                moneda.getTxtValue().getText());
 
         double result = convertirTemperature(value, indexFrom, indexTo);
-        temperatura.getLblResult().setText("Resultado: " + result);
+        moneda.getLblResult().setText("Resultado: " + result+" "+moneda.getCmbTo().getSelectedItem().toString());
     }
 
-    private double convertirTemperature(double value, int from, int to) {
-        switch (from) {
-            case 0:
-                switch (to) {
-                    case 0:
-                        return value;
-                    case 1:
-                        return celciusToFahrenheit(value);
-                }
-            case 1:
-                switch (to) {
-                    case 0:
-                        return fahrenheitToCelcius(value);
-                    case 1:
-                        return value;
-                }
+    private double convertirTemperature(double value, String from, String to) {
+        from=moneda.getCmbFrom().getSelectedItem().toString();
+        to=moneda.getCmbTo().getSelectedItem().toString();
+        
+        if(from.equalsIgnoreCase("Cordoba")){
+            if(to.equalsIgnoreCase("Dolar")){
+                value=CordobaToDolar(value);
+            }else if(to.equalsIgnoreCase("Euro")){
+                value=CordobaToEuro(value);
+            }
+        }
+        
+        if(from.equalsIgnoreCase("Dolar")){
+            if(to.equalsIgnoreCase("Cordoba")){
+                value=DolarToCordoba(value);
+            }else if(to.equalsIgnoreCase("Euro")){
+                value=DolarToEuro(value);
+            }
+        }
+        
+        if(from.equalsIgnoreCase("Euro")){
+            if(to.equalsIgnoreCase("Cordoba")){
+                value=EuroToCordoba(value);
+            }else if(to.equalsIgnoreCase("Dolar")){
+                value=EuroToDolar(value);
+            }
         }
         return value;
     }
 
     private double DolarToCordoba(double value) {
-        return (((double) 9 / 5 * value) + 32);
+        return ((double) value*35.20);
     }
 
-    private double fahrenheitToCelcius(double value) {
-        return (((double) 5 / 9) * (value - 32));
+    private double DolarToEuro(double value) {
+        return ((double)value*0.82);
     }
     
+    private double EuroToCordoba(double value){
+        return ((double)value*42.77);
+    }
+    
+    private double EuroToDolar(double value){
+        return ((double)value*1.22);
+    }
+    
+    private double CordobaToDolar(double value){
+        return ((double)value*0.029);
+    }
+    
+    private double CordobaToEuro(double value){
+        return ((double)value*0.024);
+    }
 }
